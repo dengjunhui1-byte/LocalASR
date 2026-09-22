@@ -1,0 +1,55 @@
+{
+  "id": "parakeet",
+  "displayName": "Parakeet-TDT 0.6B v2（0.3B–0.6B 旗舰）",
+  "runtime": "ONNX Runtime (sherpa-onnx / NeMo TDT)",
+  "description": "NVIDIA Parakeet-TDT-0.6B-v2：600M 参数英文 ASR，内置标点、大小写与词级时间戳。UI 语言选中文时仍走同一英文模型，请优先用 SenseVoice / Paraformer 做中文。",
+  "parameterCount": "600M (NVIDIA Hugging Face model card: nvidia/parakeet-tdt-0.6b-v2)",
+  "flagship": true,
+  "languages": ["en", "zh"],
+  "sampleHints": {
+    "zh": "本模型为英文训练；此处仅作提示。中文请切换 SenseVoice 或 Paraformer。",
+    "en": "Read English with punctuation: LocalASR will show word-level timestamps when the runtime exposes them."
+  },
+  "models": [
+    {
+      "id": "parakeet-tdt-0.6b-v2-int8",
+      "label": "Parakeet-TDT 0.6B v2 int8",
+      "languages": ["en", "zh"],
+      "dir": "sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8",
+      "source": "remote",
+      "version": "1",
+      "sizeBytes": 650000000,
+      "archive": "TAR_BZ2",
+      "onDemand": true,
+      "urls": [
+        "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2"
+      ]
+    }
+  ],
+  "params": [
+    {
+      "key": "numThreads",
+      "type": "enum",
+      "label": "推理线程",
+      "default": "2",
+      "values": ["1", "2", "4"]
+    },
+    {
+      "key": "decodingMethod",
+      "type": "enum",
+      "label": "解码",
+      "default": "greedy_search",
+      "values": ["greedy_search", "modified_beam_search"]
+    },
+    {
+      "key": "maxActivePaths",
+      "type": "int",
+      "label": "modified_beam_search 路径数",
+      "default": 4,
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "help": "仅 decodingMethod=modified_beam_search 时生效"
+    }
+  ]
+}

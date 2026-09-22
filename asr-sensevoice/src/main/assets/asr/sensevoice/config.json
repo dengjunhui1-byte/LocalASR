@@ -1,0 +1,54 @@
+{
+  "id": "sensevoice",
+  "displayName": "SenseVoice Small",
+  "runtime": "ONNX Runtime (sherpa-onnx)",
+  "description": "FunAudioLLM SenseVoiceSmall：234M 参数非自回归多语 ASR，附带情感/音频事件标签；中文友好，参数量略低于 0.3B 下限。",
+  "parameterCount": "234M (FunASR / SenseVoice official model card)",
+  "flagship": false,
+  "languages": ["zh", "en"],
+  "sampleHints": {
+    "zh": "可以带一点情绪朗读，SenseVoice 会尝试识别情感与背景事件标签。",
+    "en": "English utterances are supported; language ID runs inside the model."
+  },
+  "models": [
+    {
+      "id": "sensevoice-small",
+      "label": "SenseVoice Small int8",
+      "languages": ["zh", "en"],
+      "dir": "sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17",
+      "source": "remote",
+      "version": "1",
+      "sizeBytes": 240000000,
+      "archive": "TAR_BZ2",
+      "urls": [
+        "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.tar.bz2",
+        "https://huggingface.co/csukuangfj/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17/resolve/main/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.tar.bz2"
+      ],
+      "onDemand": true
+    }
+  ],
+  "params": [
+    {
+      "key": "language",
+      "type": "enum",
+      "label": "语言提示",
+      "default": "auto",
+      "values": ["auto", "zh", "en", "yue", "ja", "ko"],
+      "help": "SenseVoice 支持 auto；UI 的 zh/en 会映射到此处"
+    },
+    {
+      "key": "useItn",
+      "type": "bool",
+      "label": "逆文本归一化 (ITN)",
+      "default": true,
+      "help": "数字、日期等是否转为书面形式"
+    },
+    {
+      "key": "numThreads",
+      "type": "enum",
+      "label": "推理线程",
+      "default": "2",
+      "values": ["1", "2", "4"]
+    }
+  ]
+}

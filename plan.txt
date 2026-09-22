@@ -1,0 +1,15 @@
+制作一个 ASR Android 离线程序（LocalASR，LocalTTS 姊妹项目）
+一、ASR 模型选择
+1. Whisper Base、Paraformer-small、流式 Zipformer：sherpa-onnx + ONNX，体积小、易教学
+2. Parakeet-TDT 0.6B（600M）：0.3B–0.6B 档旗舰（NVIDIA 官方参数量）
+3. SenseVoice Small（234M）：中英主力，低于 300M 下限
+
+二、业务与工程
+- 模块：app + asr-core + 五个引擎 module（whisper / paraformer / sensevoice / parakeet / streaming）
+- 统一 AsrEngine / AsrEngineProvider / EngineDescriptor / ModelInstaller
+- assets 命名空间 asr/<engineId>/，首启拷贝到 getExternalFilesDir()/localasr/models/
+- 参数 JSON 驱动 UI；支持 zh/en；文件识别 + 麦克风（流式引擎 partial）
+- 模型不入库，tools/fetch_models.sh 下载
+
+三、文档
+- docs/ 五篇简体中文教程：产业调研、0.3B 选型、架构、构建、扩展引擎

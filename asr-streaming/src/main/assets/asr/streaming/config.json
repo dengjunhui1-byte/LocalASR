@@ -1,0 +1,45 @@
+{
+  "id": "streaming",
+  "displayName": "Zipformer 流式 (sherpa-onnx)",
+  "runtime": "ONNX Runtime (sherpa-onnx OnlineRecognizer)",
+  "description": "中英双语流式 Zipformer transducer，麦克风边说边出 partial 文本。",
+  "parameterCount": "~20M–70M encoder tier (streaming bilingual export)",
+  "flagship": false,
+  "languages": ["zh", "en"],
+  "sampleHints": {
+    "zh": "流式模式：按住录音时观察 partial 文本如何随语音更新。",
+    "en": "Streaming mode shows partial hypotheses while you speak."
+  },
+  "models": [
+    {
+      "id": "zipformer-bilingual-mobile",
+      "label": "Streaming Zipformer bilingual (mobile)",
+      "languages": ["zh", "en"],
+      "dir": "sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20-mobile",
+      "source": "remote",
+      "version": "1",
+      "sizeBytes": 346961920,
+      "archive": "TAR_BZ2",
+      "onDemand": true,
+      "urls": [
+        "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20-mobile.tar.bz2"
+      ]
+    }
+  ],
+  "params": [
+    {
+      "key": "numThreads",
+      "type": "enum",
+      "label": "推理线程",
+      "default": "2",
+      "values": ["1", "2", "4"]
+    },
+    {
+      "key": "decodingMethod",
+      "type": "enum",
+      "label": "解码",
+      "default": "greedy_search",
+      "values": ["greedy_search", "modified_beam_search"]
+    }
+  ]
+}

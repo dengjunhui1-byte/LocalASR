@@ -1,0 +1,53 @@
+{
+  "id": "whisper",
+  "displayName": "Whisper Base (sherpa-onnx)",
+  "runtime": "ONNX Runtime (sherpa-onnx)",
+  "description": "OpenAI Whisper 多语 Seq2Seq，适合教学对比：参数量约 74M（Base），中英可用 language 指定或 auto。",
+  "parameterCount": "~74M (Whisper Base, OpenAI card)",
+  "flagship": false,
+  "languages": ["zh", "en"],
+  "sampleHints": {
+    "zh": "请对着麦克风说：今天天气不错，我们来测试离线语音识别。",
+    "en": "Try saying: The quick brown fox jumps over the lazy dog."
+  },
+  "models": [
+    {
+      "id": "whisper-base",
+      "label": "Whisper Base int8",
+      "languages": ["zh", "en"],
+      "dir": "sherpa-onnx-whisper-base",
+      "source": "remote",
+      "version": "1",
+      "sizeBytes": 207093760,
+      "archive": "TAR_BZ2",
+      "onDemand": true,
+      "urls": [
+        "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-base.tar.bz2"
+      ]
+    }
+  ],
+  "params": [
+    {
+      "key": "whisperLanguage",
+      "type": "enum",
+      "label": "Whisper 语言",
+      "default": "auto",
+      "values": ["auto", "zh", "en"],
+      "help": "多语模型：auto 让 Whisper 自行检测；也可强制 zh/en"
+    },
+    {
+      "key": "numThreads",
+      "type": "enum",
+      "label": "推理线程",
+      "default": "2",
+      "values": ["1", "2", "4"]
+    },
+    {
+      "key": "enableTokenTimestamps",
+      "type": "bool",
+      "label": "词级时间戳",
+      "default": false,
+      "help": "开启后 result.timestamps 可能非空（取决于导出）"
+    }
+  ]
+}

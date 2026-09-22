@@ -1,0 +1,26 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+**/build/
+captures
+.externalNativeBuild
+.cxx
+*.apk
+*.ap_
+*.dex
+
+.model-cache/
+**/.installed
+agent-tools/
+
+# Model weights — fetch with tools/fetch_models.sh
+**/assets/asr/*/models/**
+!**/assets/asr/*/models/.gitkeep
+
+*.onnx
+*.int8.onnx
+*.tar.bz2
+*.zip
