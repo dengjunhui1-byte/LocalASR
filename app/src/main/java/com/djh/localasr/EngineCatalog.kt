@@ -1,6 +1,7 @@
 package com.djh.localasr
 
 import com.djh.localasr.core.AsrEngineProvider
+import com.djh.localasr.qwenasr.QwenAsrProvider
 import com.djh.localasr.parakeet.ParakeetProvider
 import com.djh.localasr.paraformer.ParaformerProvider
 import com.djh.localasr.sensevoice.SenseVoiceProvider
@@ -14,5 +15,6 @@ object EngineCatalog {
         SenseVoiceProvider,
         ParakeetProvider,
         StreamingProvider,
+        QwenAsrProvider,
     )
 }

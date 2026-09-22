@@ -13,6 +13,7 @@ MODULES = [
     ("sensevoice", "asr-sensevoice"),
     ("parakeet", "asr-parakeet"),
     ("streaming", "asr-streaming"),
+    ("qwenasr", "asr-qwenasr"),
 ]
 
 

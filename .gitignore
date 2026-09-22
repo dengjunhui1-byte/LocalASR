@@ -20,6 +20,10 @@ agent-tools/
 **/assets/asr/*/models/**
 !**/assets/asr/*/models/.gitkeep
 
+# MNN JNI — build with tools/build_qwenasr_native.sh
+**/jniLibs/**/*.so
+!**/jniLibs/**/.gitkeep
+
 *.onnx
 *.int8.onnx
 *.tar.bz2

@@ -26,6 +26,12 @@ data class ParamSpec(
     fun defaultBool(): Boolean = default.toBooleanStrictOrNull() ?: false
 }
 
+data class RemoteModelFile(
+    val path: String,
+    val sizeBytes: Long = 0L,
+    val urls: List<String> = emptyList(),
+)
+
 data class ModelSpec(
     val id: String,
     val label: String,
@@ -38,9 +44,13 @@ data class ModelSpec(
     val archive: ModelArchive = ModelArchive.NONE,
     val sha256: String = "",
     val onDemand: Boolean = false,
+    /** When non-empty, [ModelInstaller] fetches each path separately (MNN packs). */
+    val files: List<RemoteModelFile> = emptyList(),
 ) {
     val installable: Boolean
-        get() = source == ModelSource.ASSET || urls.isNotEmpty()
+        get() = source == ModelSource.ASSET ||
+            urls.isNotEmpty() ||
+            files.any { it.urls.isNotEmpty() }
 }
 
 data class EngineDescriptor(
@@ -99,6 +109,15 @@ data class EngineDescriptor(
             archive = ModelArchive.valueOf(optString("archive", "none").uppercase()),
             sha256 = optString("sha256"),
             onDemand = optBoolean("onDemand", false),
+            files = optJSONArray("files")?.map { it.toRemoteModelFile() } ?: emptyList(),
+        )
+
+        private fun JSONObject.toRemoteModelFile() = RemoteModelFile(
+            path = getString("path"),
+            sizeBytes = optLong("sizeBytes", 0L),
+            urls = optJSONArray("urls")?.toStringList() ?: listOfNotNull(
+                optString("url").takeIf { it.isNotBlank() }
+            ),
         )
 
         private fun JSONObject.toParamSpec() = ParamSpec(

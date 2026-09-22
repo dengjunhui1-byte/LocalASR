@@ -1,0 +1,126 @@
+{
+  "id": "qwenasr",
+  "displayName": "Qwen ASR (MNN)",
+  "runtime": "MNN (qwen3_asr + audio encoder)",
+  "description": "Qwen3-ASR-0.6B 的 int8 MNN 转换包（社区导出，源模型 Qwen/Qwen3-ASR-0.6B）。离线整段识别，52 语系能力以官方模型卡为准；UI 提供中英语言提示。",
+  "parameterCount": "600M (Qwen/Qwen3-ASR-0.6B official model card)",
+  "flagship": true,
+  "languages": ["zh", "en"],
+  "supportedAbis": ["arm64-v8a"],
+  "sampleHints": {
+    "zh": "请清晰朗读一段中文；模型通过 MNN Omni 音频编码器 + LLM 解码。",
+    "en": "Speak a short English sentence; language hint maps to Chinese/English in the chat template."
+  },
+  "models": [
+    {
+      "id": "qwen3-asr-06b-int8-mnn",
+      "label": "Qwen3-ASR 0.6B int8 MNN",
+      "languages": ["zh", "en"],
+      "dir": "qwen3-asr-0.6b-int8-mnn",
+      "source": "remote",
+      "version": "1",
+      "sizeBytes": 1325865690,
+      "onDemand": true,
+      "files": [
+        {
+          "path": "config.json",
+          "sizeBytes": 634,
+          "urls": [
+            "https://huggingface.co/hb-dev/Qwen3-ASR-0.6B-INT8-MNN/resolve/main/config.json",
+            "https://www.modelscope.cn/models/huangzhengxiang/Qwen3-ASR-0.6B-INT8-MNN/resolve/master/config.json"
+          ]
+        },
+        {
+          "path": "llm_config.json",
+          "sizeBytes": 797,
+          "urls": [
+            "https://huggingface.co/hb-dev/Qwen3-ASR-0.6B-INT8-MNN/resolve/main/llm_config.json",
+            "https://www.modelscope.cn/models/huangzhengxiang/Qwen3-ASR-0.6B-INT8-MNN/resolve/master/llm_config.json"
+          ]
+        },
+        {
+          "path": "tokenizer.txt",
+          "sizeBytes": 3194205,
+          "urls": [
+            "https://huggingface.co/hb-dev/Qwen3-ASR-0.6B-INT8-MNN/resolve/main/tokenizer.txt",
+            "https://www.modelscope.cn/models/huangzhengxiang/Qwen3-ASR-0.6B-INT8-MNN/resolve/master/tokenizer.txt"
+          ]
+        },
+        {
+          "path": "llm.mnn",
+          "sizeBytes": 505912,
+          "urls": [
+            "https://huggingface.co/hb-dev/Qwen3-ASR-0.6B-INT8-MNN/resolve/main/llm.mnn",
+            "https://www.modelscope.cn/models/huangzhengxiang/Qwen3-ASR-0.6B-INT8-MNN/resolve/master/llm.mnn"
+          ]
+        },
+        {
+          "path": "llm.mnn.weight",
+          "sizeBytes": 633809314,
+          "urls": [
+            "https://huggingface.co/hb-dev/Qwen3-ASR-0.6B-INT8-MNN/resolve/main/llm.mnn.weight",
+            "https://www.modelscope.cn/models/huangzhengxiang/Qwen3-ASR-0.6B-INT8-MNN/resolve/master/llm.mnn.weight"
+          ]
+        },
+        {
+          "path": "llm.mnn.json",
+          "sizeBytes": 1016156,
+          "urls": [
+            "https://huggingface.co/hb-dev/Qwen3-ASR-0.6B-INT8-MNN/resolve/main/llm.mnn.json",
+            "https://www.modelscope.cn/models/huangzhengxiang/Qwen3-ASR-0.6B-INT8-MNN/resolve/master/llm.mnn.json"
+          ]
+        },
+        {
+          "path": "embeddings_bf16.bin",
+          "sizeBytes": 311164928,
+          "urls": [
+            "https://huggingface.co/hb-dev/Qwen3-ASR-0.6B-INT8-MNN/resolve/main/embeddings_bf16.bin",
+            "https://www.modelscope.cn/models/huangzhengxiang/Qwen3-ASR-0.6B-INT8-MNN/resolve/master/embeddings_bf16.bin"
+          ]
+        },
+        {
+          "path": "audio.mnn",
+          "sizeBytes": 2988144,
+          "urls": [
+            "https://huggingface.co/hb-dev/Qwen3-ASR-0.6B-INT8-MNN/resolve/main/audio.mnn",
+            "https://www.modelscope.cn/models/huangzhengxiang/Qwen3-ASR-0.6B-INT8-MNN/resolve/master/audio.mnn"
+          ]
+        },
+        {
+          "path": "audio.mnn.weight",
+          "sizeBytes": 373185600,
+          "urls": [
+            "https://huggingface.co/hb-dev/Qwen3-ASR-0.6B-INT8-MNN/resolve/main/audio.mnn.weight",
+            "https://www.modelscope.cn/models/huangzhengxiang/Qwen3-ASR-0.6B-INT8-MNN/resolve/master/audio.mnn.weight"
+          ]
+        }
+      ]
+    }
+  ],
+  "params": [
+    {
+      "key": "language",
+      "type": "enum",
+      "label": "识别语言提示",
+      "default": "auto",
+      "values": ["auto", "Chinese", "English"],
+      "help": "写入 llm_config 的 asr_language；auto 时跟随 UI 的 zh/en"
+    },
+    {
+      "key": "maxNewTokens",
+      "type": "int",
+      "label": "最大生成 Token",
+      "default": 512,
+      "min": 64,
+      "max": 2048,
+      "step": 64
+    },
+    {
+      "key": "numThreads",
+      "type": "enum",
+      "label": "推理线程",
+      "default": "4",
+      "values": ["2", "4", "6", "8"]
+    }
+  ]
+}

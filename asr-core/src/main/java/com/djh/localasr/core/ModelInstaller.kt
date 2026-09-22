@@ -150,6 +150,10 @@ object ModelInstaller {
         dest: File,
         onProgress: (InstallProgress) -> Unit,
     ) {
+        if (spec.files.isNotEmpty()) {
+            downloadRemoteFiles(context, engineId, spec, dest, onProgress)
+            return
+        }
         require(spec.urls.isNotEmpty()) { "model ${spec.id} is remote but has no url" }
 
         val cache = File(context.cacheDir, "model-downloads").apply { mkdirs() }
@@ -196,6 +200,68 @@ object ModelInstaller {
                 payload.copyTo(File(dest, name), overwrite = true)
                 payload.delete()
             }
+        }
+    }
+
+    private suspend fun downloadRemoteFiles(
+        context: Context,
+        engineId: String,
+        spec: ModelSpec,
+        dest: File,
+        onProgress: (InstallProgress) -> Unit,
+    ) {
+        val cache = File(context.cacheDir, "model-downloads").apply { mkdirs() }
+        val job = coroutineContext[kotlinx.coroutines.Job]
+        val checkActive = { job?.ensureActive() ?: Unit }
+        val totalBytes = when {
+            spec.sizeBytes > 0 -> spec.sizeBytes
+            else -> spec.files.sumOf { it.sizeBytes }.takeIf { it > 0 } ?: -1L
+        }
+        var done = 0L
+
+        for (file in spec.files) {
+            coroutineContext.ensureActive()
+            require(file.urls.isNotEmpty()) { "remote file ${file.path} has no url" }
+            val target = File(dest, file.path)
+            target.parentFile?.mkdirs()
+            val payload = File(cache, "${engineId}-${spec.id}-${file.path.replace('/', '_')}.part")
+            var lastFailure: Throwable? = null
+            val ok = file.urls.any { url ->
+                runCatching {
+                    downloadTo(
+                        payload,
+                        url,
+                        spec.copy(sizeBytes = file.sizeBytes),
+                        engineId,
+                        file.path,
+                        checkActive,
+                    ) { progress ->
+                        onProgress(
+                            progress.copy(
+                                bytesDone = done + progress.bytesDone,
+                                bytesTotal = if (totalBytes > 0) totalBytes else progress.bytesTotal,
+                            )
+                        )
+                    }
+                }.onFailure {
+                    if (it is kotlinx.coroutines.CancellationException) throw it
+                    lastFailure = it
+                }.isSuccess
+            }
+            if (!ok) throw lastFailure ?: IllegalStateException("下载失败：${file.path}")
+            payload.copyTo(target, overwrite = true)
+            payload.delete()
+            done += if (file.sizeBytes > 0) file.sizeBytes else target.length()
+            onProgress(
+                InstallProgress(
+                    engineId,
+                    spec.label,
+                    InstallPhase.DOWNLOADING,
+                    file.path,
+                    done,
+                    if (totalBytes > 0) totalBytes else done,
+                )
+            )
         }
     }
 

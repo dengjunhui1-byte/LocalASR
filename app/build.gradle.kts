@@ -41,7 +41,7 @@ android {
     }
 
     androidResources {
-        noCompress += listOf("onnx", "bin", "fst", "txt", "csv", "wav", "json")
+        noCompress += listOf("onnx", "bin", "fst", "txt", "csv", "wav", "json", "mnn", "weight")
     }
 }
 
@@ -52,6 +52,7 @@ dependencies {
     implementation(project(":asr-sensevoice"))
     implementation(project(":asr-parakeet"))
     implementation(project(":asr-streaming"))
+    implementation(project(":asr-qwenasr"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
