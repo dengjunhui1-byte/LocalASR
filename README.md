@@ -43,15 +43,7 @@ python3 tools/update_asset_sizes.py  # 回写 sizeBytes，供首启进度条使�
 - **输入**：选择 WAV/音频文件，或麦克风录音；`asr-streaming` 在录音过程中输出 **partial** 文本，其余引擎在停录后整段识别。
 - **异常**：`ModelNotInstalledException`、`UnsupportedDeviceException`（ABI 等）会在 UI 提示。
 
-## 文档
 
-| 文件 | 内容 |
-| --- | --- |
-| [docs/01-offline-asr-landscape.md](docs/01-offline-asr-landscape.md) | 离线 ASR 产业与开源模型概览 |
-| [docs/02-model-selection-0.3b-0.6b.md](docs/02-model-selection-0.3b-0.6b.md) | 0.3B 档选型与 SenseVoice 旗舰 |
-| [docs/03-architecture-like-localtts.md](docs/03-architecture-like-localtts.md) | 与 LocalTTS 同构的多引擎架构 |
-| [docs/04-build-and-run.md](docs/04-build-and-run.md) | 克隆 → 拉模型 → 运行 |
-| [docs/05-extend-a-new-engine.md](docs/05-extend-a-new-engine.md) | 新增第五个引擎 |
 
 ## 许可证
 
