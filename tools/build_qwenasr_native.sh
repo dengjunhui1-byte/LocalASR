@@ -115,9 +115,15 @@ cd "$JNI_BUILD"
   -DMNN_BUILD_DIR="$BUILD_DIR"
 "$CMAKE" --build "$JNI_BUILD" --target qwenasr_jni -- -j"$JOBS"
 cp -f "$JNI_BUILD/libqwenasr_jni.so" "$DEST/libqwenasr_jni.so"
-STRIP="$(find "$NDK/toolchains/llvm/prebuilt" -name llvm-strip -type f 2>/dev/null | head -1)"
-if [ -n "$STRIP" ]; then
+HOST_PREBUILT="$NDK/toolchains/llvm/prebuilt/linux-x86_64"
+if [ ! -d "$HOST_PREBUILT" ]; then
+  HOST_PREBUILT="$NDK/toolchains/llvm/prebuilt/darwin-x86_64"
+fi
+STRIP="$HOST_PREBUILT/bin/llvm-strip"
+if [ -x "$STRIP" ]; then
   "$STRIP" --strip-unneeded "$DEST/libqwenasr_jni.so"
+else
+  echo "!! llvm-strip not found under $NDK/toolchains/llvm/prebuilt" >&2
 fi
 ls -lh "$DEST/libqwenasr_jni.so"
 file "$DEST/libqwenasr_jni.so"
